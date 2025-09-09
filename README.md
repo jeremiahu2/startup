@@ -18,45 +18,49 @@ A brief description of the application here. Lorem ipsum dolor sit amet, consect
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] Proper use of Markdown
-- [ ] A concise and compelling elevator pitch
-- [ ] Description of key features
+- [x] Proper use of Markdown
+- [x] A concise and compelling elevator pitch
+- [x] Description of key features
 - [ ] Description of how you will use each technology
-- [ ] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
+- [x] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
 
 ### Elevator pitch
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+If you ever need to send out a poll or take a census of a small group, this application can help you with that. Users simply sign in to the application and answer the questions. The applications will save the answers and who answered what and create a simple report. You can then review and use that report.
 
 ### Design
 
-![Design image](placeholder.png)
+Login Page
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+<img width="424" height="832" alt="Startup1" src="https://github.com/user-attachments/assets/07b7862a-0a6b-472e-95d1-e3885f9461f5" />
 
-```mermaid
-sequenceDiagram
-    actor You
-    actor Website
-    You->>Website: Replace this with your design
-```
+
+Sample Question Page
+
+<img width="424" height="828" alt="Startup2" src="https://github.com/user-attachments/assets/85b7454b-d8d6-4da2-a62c-33e592868106" />
+
+This application will have a login screen where users will enter their username, and multiple question pages where they will answer various questions.
+
 
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+- Saves and reports on who filled out the forms
+- Reports the answers to questions in the forms
+- Creates a chart to display the total users and answers to questions
 
 ### Technologies
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Description here
-- **CSS** - Description here
-- **React** - Description here
-- **Service** - Description here
-- **DB/Login** - Description here
-- **WebSocket** - Description here
+- **HTML** - Uses two HTML pages. One for logging in and one for answering questions
+- **CSS** - Good application style, whitespace, and contrast in the forms and login
+- **React** - Will provide login, display, and apply users answers
+- **Service** - Backend service with endpoints for:
+  - logging in
+  - retrieving question
+  - submitting answers
+- **DB/Login** - Store users, questions, and answers in database. Usernames securely stored in database. Can't vote without username
+- **WebSocket** - As each user answers, their answers are broadcast to the report
 
 ## 🚀 AWS deliverable
 
