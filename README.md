@@ -66,21 +66,21 @@ I am going to use the required technologies in the following ways.
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Server deployed and accessible with custom domain name** - [My server link](https://yourdomainnamehere.click).
+- [x] **Server deployed and accessible with custom domain name** - [My server link](https://startup.260domain.click).
 
 ## 🚀 HTML deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **HTML pages** - I did not complete this part of the deliverable.
-- [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [ ] **Links** - I did not complete this part of the deliverable.
-- [ ] **Text** - I did not complete this part of the deliverable.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [x] **HTML pages** - `index.html`, `play.html`, `scores.html`, `about.html` in project root.
+- [x] **Proper HTML element usage** - Used `<header>`, `<footer>`, `<main>`, `<nav>`, `<img>`, `<a>`, `<fieldset>`, `<input>`, `<button>`, `<form>`, `<table>` in their respective pages.
+- [x] **Links** - Navigation links connect pages: Home → Vote → Scores → About.
+- [x] **Text** - About page includes descriptive text about the app.
+- [x] **3rd party API placeholder** - `about.html` contains a `<div>` for a future inspirational quote.
+- [x] **Images** - `about.html` displays a placeholder image (`designDiagram.png`).
+- [x] **Login placeholder** - `index.html` form simulates login and account creation.
+- [x] **DB data placeholder** - `scores.html` table shows sample voting results.
+- [x] **WebSocket placeholder** - `play.html` contains a `<textarea>` to show chat messages for demonstration
 
 ## 🚀 CSS deliverable
 
