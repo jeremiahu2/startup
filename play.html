@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pie Vote App - Vote</title>
+    <link rel="icon" href="favicon.ico" />
+  </head>
+  <body>
+    <header>
+      <h1>Pie Vote App</h1>
+      <nav>
+        <menu>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="play.html">Vote</a></li>
+          <li><a href="scores.html">Scores</a></li>
+          <li><a href="about.html">About</a></li>
+        </menu>
+      </nav>
+      <hr />
+    </header>
+
+    <main>
+      <h2>Vote for Your Favorite Pie</h2>
+      <form>
+        <input type="radio" name="pie" value="apple"> Apple Pie 🍎<br>
+        <input type="radio" name="pie" value="pumpkin"> Pumpkin Pie 🎃<br>
+        <input type="radio" name="pie" value="cherry"> Cherry Pie 🍒<br>
+        <input type="radio" name="pie" value="pecan"> Pecan Pie 🌰<br>
+        <button type="submit">Vote</button>
+      </form>
+
+      <section>
+        <h3>Pie Popularity Chart</h3>
+        <p>Here we will show a pie chart of votes (placeholder for Chart.js).</p>
+        <img src="placeholder.jpg" alt="Pie chart placeholder" width="250">
+      </section>
+
+      <section>
+        <h3>Pie Chatroom</h3>
+        <p>Live chat will go here (placeholder for WebSockets).</p>
+        <div id="chat-window">No messages yet...</div>
+        <input type="text" placeholder="Type your message here..." />
+        <button>Send</button>
+      </section>
+    </main>
+
+    <footer>
+      <hr />
+      <span>Created by Jeremiah Barton</span><br />
+      <a href="https://github.com/jeremiahu2/startup">GitHub</a>
+    </footer>
+  </body>
+</html>
+
