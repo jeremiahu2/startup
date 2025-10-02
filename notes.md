@@ -68,6 +68,19 @@ I also used SVG to make the icon and logo for the app. This turned out to be a p
 </svg>
 ```
 
+## Startup CSS Assignment Learnings
+
+- Learned how to combine custom CSS with a framework (Bootstrap) to get the desired styling while maintaining responsiveness.  
+- Practiced semantic HTML and proper layout using header, footer, main, nav, form, and tables.  
+- Learned to style forms, buttons, tables, and other UI components consistently across multiple pages.  
+- Implemented responsive design with media queries and Bootstrap classes to support desktop, tablet, and mobile screen sizes.  
+- Learned to override Bootstrap defaults without breaking the grid or responsive behavior.  
+- Practiced flexbox layout for aligning elements like login forms and vote options.  
+- Learned to maintain a consistent visual design across multiple pages including typography, spacing, and hover effects.  
+- Learned version control habits: committing changes often with descriptive messages to demonstrate ownership.  
+- Learned to deploy a static site using the deployFiles.sh script and ensure it works on a production environment.  
+- Learned to document my work in notes.md, including challenges, solutions, and design decisions.
+
 ## React Part 1: Routing
 
 Setting up Vite and React was pretty simple. I had a bit of trouble because of conflicting CSS. This isn't as straight forward as you would find with Svelte or Vue, but I made it work in the end. If there was a ton of CSS it would be a real problem. It sure was nice to have the code structured in a more usable way.

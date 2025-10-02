@@ -86,12 +86,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Header, footer, and main content body** - I did not complete this part of the deliverable.
-- [ ] **Navigation elements** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing** - I did not complete this part of the deliverable.
-- [ ] **Application elements** - I did not complete this part of the deliverable.
-- [ ] **Application text content** - I did not complete this part of the deliverable.
-- [ ] **Application images** - I did not complete this part of the deliverable.
+- [x] **Header, footer, and main content body** - I implemented a consistent header, footer, and main section across all pages using semantic HTML and styled them with CSS and Bootstrap for a clean layout. 
+- [x] **Navigation elements** - I built a responsive navigation bar using Bootstrap’s navbar component and ensured that active links are highlighted. Navigation works consistently across all pages.
+- [x] **Responsive to window resizing** - I used Bootstrap’s grid system, media queries, and flexible CSS units to make sure the site looks good on desktop, tablet, and mobile screen sizes.
+- [x] **Application elements** - I styled login forms, vote options, tables, and buttons using custom CSS and Bootstrap to create a visually consistent and usable interface.  
+- [x] **Application text content** - I ensured all text elements (headings, paragraphs, labels) are properly styled, readable, and aligned with the overall visual design.  
+- [x] **Application images** - I included SVG graphics and icons for logos and interactive elements, making sure they are responsive and visually integrated with the page design.
 
 ## 🚀 React part 1: Routing deliverable
 
