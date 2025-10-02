@@ -1,3 +1,4 @@
+/* Reset and basic styling */
 * {
   margin: 0;
   padding: 0;
@@ -46,6 +47,7 @@ main {
   min-height: 70vh; /* ensures page content fills screen */
 }
 
+/* Navbar */
 nav {
   background-color: #0066cc;
   display: flex;
@@ -173,6 +175,7 @@ nav a.active {
   background: #004080;
 }
 
+/* === Commit 4 & 5: Scores Page Styles === */
 .scores-container {
   max-width: 800px;
   margin: 2rem auto;
@@ -215,6 +218,7 @@ table tr:hover {
   background-color: #e6f2ff;
 }
 
+/* === Commit 6: About Page Styles === */
 .about-container {
   max-width: 700px;
   margin: 2rem auto;
@@ -246,6 +250,7 @@ table tr:hover {
   margin-bottom: 0.5rem;
 }
 
+/* Buttons */
 .btn {
   display: inline-block;
   padding: 0.6rem 1.2rem;
@@ -258,7 +263,6 @@ table tr:hover {
   border: none;
 }
 
-/* Primary button (main actions like login, submit) */
 .btn-primary {
   background-color: #0066cc;
   color: white;
@@ -269,7 +273,6 @@ table tr:hover {
   transform: scale(1.03);
 }
 
-/* Secondary button (less important actions) */
 .btn-secondary {
   background-color: #e0e0e0;
   color: #333;
@@ -280,6 +283,7 @@ table tr:hover {
   transform: scale(1.03);
 }
 
+/* === Responsive Styling === */
 @media (max-width: 768px) {
   nav {
     flex-direction: column;
