@@ -14,56 +14,76 @@
     >
   </head>
   <body>
-    <header>
-      <nav>
-        <a href="index.html">Home</a>
-        <a class="active" href="play.html">Vote</a>
-        <a href="scores.html">Scores</a>
-        <a href="about.html">About</a>
+    <header class="mb-4">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="index.html">Pie Vote App</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+              <li class="nav-item"><a class="nav-link active" href="play.html">Vote</a></li>
+              <li class="nav-item"><a class="nav-link" href="scores.html">Scores</a></li>
+              <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+            </ul>
+          </div>
+        </div>
       </nav>
     </header>
 
-    <main class="vote-container">
-      <h2>Vote for Your Favorite Pie</h2>
-      <form>
-        <div class="vote-option">
-          <input type="radio" name="pie" value="apple" id="pieApple">
-          <label for="pieApple">Apple Pie 🍎</label>
+    <main class="container text-center">
+      <h1 class="mb-4">Vote for Your Favorite Pie</h1>
+
+      <form class="mx-auto" style="max-width: 500px;">
+        <div class="mb-3 form-check">
+          <input class="form-check-input" type="radio" name="pie" id="apple">
+          <label class="form-check-label" for="apple">Apple Pie 🍎</label>
         </div>
-        <div class="vote-option">
-          <input type="radio" name="pie" value="pumpkin" id="piePumpkin">
-          <label for="piePumpkin">Pumpkin Pie 🎃</label>
+        <div class="mb-3 form-check">
+          <input class="form-check-input" type="radio" name="pie" id="pumpkin">
+          <label class="form-check-label" for="pumpkin">Pumpkin Pie 🎃</label>
         </div>
-        <div class="vote-option">
-          <input type="radio" name="pie" value="cherry" id="pieCherry">
-          <label for="pieCherry">Cherry Pie 🍒</label>
+        <div class="mb-3 form-check">
+          <input class="form-check-input" type="radio" name="pie" id="cherry">
+          <label class="form-check-label" for="cherry">Cherry Pie 🍒</label>
         </div>
-        <div class="vote-option">
-          <input type="radio" name="pie" value="pecan" id="piePecan">
-          <label for="piePecan">Pecan Pie 🌰</label>
+        <div class="mb-3 form-check">
+          <input class="form-check-input" type="radio" name="pie" id="pecan">
+          <label class="form-check-label" for="pecan">Pecan Pie 🌰</label>
         </div>
-        <button type="submit" class="btn btn-primary">Vote</button>
+
+        <button type="submit" class="btn btn-primary me-2">Vote</button>
+        <button type="button" class="btn btn-secondary">Reset</button>
       </form>
 
-      <section>
-        <h3>Pie Popularity Chart</h3>
-        <img src="placeholder.jpg" alt="Pie chart placeholder" class="img-fluid" style="max-width:250px;">
+      <section class="mt-5">
+        <h2>Pie Popularity Chart</h2>
+        <img src="placeholder.jpg" alt="Pie chart placeholder" class="img-fluid mt-3" style="max-width:300px;">
       </section>
 
-      <section>
-        <h3>Pie Chatroom</h3>
-        <div id="chat-window" class="border rounded p-2 mb-2">No messages yet...</div>
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Type your message here..." />
+      <section class="mt-5">
+        <h2>Pie Chatroom</h2>
+        <div class="border rounded p-3 mb-3" style="min-height: 100px;">No messages yet...</div>
+        <div class="input-group mb-4">
+          <input type="text" class="form-control" placeholder="Type your message here...">
           <button class="btn btn-primary">Send</button>
         </div>
       </section>
     </main>
 
-    <footer>
+    <footer class="text-center mt-5 py-3 border-top">
       <span>Created by Jeremiah Barton</span><br />
       <a href="https://github.com/jeremiahu2/startup">GitHub</a>
     </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>
 

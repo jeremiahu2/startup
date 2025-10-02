@@ -14,35 +14,57 @@
     >
   </head>
   <body>
-    <header>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="play.html">Vote</a>
-        <a href="scores.html">Scores</a>
-        <a class="active" href="about.html">About</a>
+    <header class="mb-4">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="index.html">Pie Vote App</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+              <li class="nav-item"><a class="nav-link" href="play.html">Vote</a></li>
+              <li class="nav-item"><a class="nav-link" href="scores.html">Scores</a></li>
+              <li class="nav-item"><a class="nav-link active" href="about.html">About</a></li>
+            </ul>
+          </div>
+        </div>
       </nav>
     </header>
 
-    <main class="about-container">
-      <img src="placeholder.jpg" alt="Pie picture" class="img-fluid mb-3" style="max-width:300px;" />
-      <p>The Pie Vote App lets users vote for their favorite flavor of pie and see live results. Users can also chat in real time about their choices.</p>
+    <main class="container text-center">
+      <h1 class="mb-4">About the Pie Vote App</h1>
 
-      <h3>Future versions will include:</h3>
-      <ul>
-        <li>Database storage of votes</li>
-        <li>Live chat via WebSockets</li>
-        <li>A real pie chart visualization using Chart.js</li>
+      <img src="placeholder.jpg" alt="Pie picture" class="img-fluid mb-3" style="max-width:300px;">
+
+      <p class="lead mb-4">
+        The Pie Vote App lets users vote for their favorite pie flavor, see live results, and chat with other pie fans.
+      </p>
+
+      <h3>Future Features:</h3>
+      <ul class="list-group mx-auto mb-4" style="max-width:400px;">
+        <li class="list-group-item">Database storage of votes</li>
+        <li class="list-group-item">Live chat via WebSockets</li>
+        <li class="list-group-item">Real pie chart visualization using Chart.js</li>
       </ul>
 
-      <blockquote class="blockquote text-center mt-4">
-        <em>"Any way you slice it, pie brings people together."</em>
+      <blockquote class="blockquote">
+        <p class="mb-0"><em>"Any way you slice it, pie brings people together."</em></p>
       </blockquote>
     </main>
 
-    <footer>
+    <footer class="text-center mt-5 py-3 border-top">
       <span>Created by Jeremiah Barton</span><br />
       <a href="https://github.com/jeremiahu2/startup">GitHub</a>
     </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>
 
