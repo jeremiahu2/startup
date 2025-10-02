@@ -214,3 +214,34 @@ table tr:nth-child(even) {
 table tr:hover {
   background-color: #e6f2ff;
 }
+
+.about-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  line-height: 1.8;
+}
+
+.about-container h2 {
+  text-align: center;
+  color: #004080;
+  margin-bottom: 1rem;
+}
+
+.about-container p {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #444;
+}
+
+.about-container ul {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.about-container li {
+  margin-bottom: 0.5rem;
+}
