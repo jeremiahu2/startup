@@ -1,38 +1,25 @@
-/* Reset and basic styling */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
 body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   line-height: 1.6;
   background-color: #f9f9f9;
   color: #333;
-  margin: 0;
-  padding: 0;
 }
-
-/* Basic links */
 a {
   color: #0066cc;
   text-decoration: none;
 }
-
 a:hover {
   text-decoration: underline;
 }
-
-/* Layout for header, footer, and main */
 header {
-  background-color: #004080; /* deep BYU blue */
-  color: white;
-  padding: 1rem;
-  text-align: center;
+  margin-bottom: 1rem;
 }
-
 footer {
   background-color: #222;
   color: #ddd;
@@ -40,289 +27,89 @@ footer {
   text-align: center;
   font-size: 0.9rem;
 }
-
 main {
-  background-color: #fdfdfd;
+  min-height: 70vh;
   padding: 2rem;
-  min-height: 70vh; /* ensures page content fills screen */
 }
-
-/* Navbar */
-nav {
-  background-color: #0066cc;
-  display: flex;
-  justify-content: center;
-  padding: 0.5rem;
-}
-
-nav a {
-  color: white;
-  margin: 0 1rem;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  font-weight: bold;
-  transition: background-color 0.3s;
-}
-
-nav a:hover {
-  background-color: #004080;
-  text-decoration: none;
-}
-
-nav a.active {
-  background-color: #00264d; /* darker blue for active link */
-}
-
-/* === Commit 2: Login Form Styles === */
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70vh;
-}
-
-.login-box {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  width: 300px;
-}
-
-.login-box h2 {
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.login-box label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-}
-
-.login-box input[type="text"],
-.login-box input[type="password"] {
-  width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.login-box button {
-  width: 100%;
-  padding: 0.75rem;
-  background: #0066cc;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.login-box button:hover {
-  background: #004080;
-}
-
-/* === Commit 3: Voting Page Styles === */
-.vote-container {
-  max-width: 600px;
-  margin: 2rem auto;
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.vote-container h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.vote-option {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  transition: background-color 0.2s;
-}
-
-.vote-option:hover {
-  background-color: #f0f8ff;
-}
-
-.vote-option input {
-  margin-right: 0.75rem;
-}
-
-.vote-container button {
-  display: block;
-  margin: 1rem auto 0;
-  padding: 0.75rem 1.5rem;
-  background: #0066cc;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.vote-container button:hover {
-  background: #004080;
-}
-
-/* === Commit 4 & 5: Scores Page Styles === */
-.scores-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  background: #ffffff;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.scores-container h2 {
-  text-align: center;
-  color: #004080;
-  margin-bottom: 1.5rem;
-}
-
-/* Table styles */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 0 auto;
-}
-
-table th, table td {
-  border: 1px solid #ddd;
-  padding: 0.75rem;
-  text-align: center;
-}
-
-table th {
-  background-color: #004080;
-  color: white;
-  font-weight: bold;
-}
-
-table tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-table tr:hover {
-  background-color: #e6f2ff;
-}
-
-/* === Commit 6: About Page Styles === */
-.about-container {
-  max-width: 700px;
-  margin: 2rem auto;
-  background: #ffffff;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  line-height: 1.8;
-}
-
-.about-container h2 {
-  text-align: center;
-  color: #004080;
-  margin-bottom: 1rem;
-}
-
-.about-container p {
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  color: #444;
-}
-
-.about-container ul {
-  margin: 1rem 0;
-  padding-left: 1.5rem;
-}
-
-.about-container li {
-  margin-bottom: 0.5rem;
-}
-
-/* Buttons */
-.btn {
-  display: inline-block;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  font-weight: bold;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-  text-align: center;
-  border: none;
-}
-
 .btn-primary {
   background-color: #0066cc;
   color: white;
+  transition: background-color 0.3s, transform 0.2s;
 }
-
 .btn-primary:hover {
   background-color: #004080;
   transform: scale(1.03);
 }
-
 .btn-secondary {
   background-color: #e0e0e0;
   color: #333;
 }
-
 .btn-secondary:hover {
   background-color: #c0c0c0;
   transform: scale(1.03);
 }
-
-/* === Responsive Styling === */
+input[type="text"],
+input[type="password"],
+input[type="radio"],
+input[type="checkbox"] {
+  border-radius: 5px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+table th,
+table td {
+  padding: 0.75rem;
+  text-align: center;
+}
+table th {
+  background-color: #004080;
+  color: white;
+}
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+table tr:hover {
+  background-color: #e6f2ff;
+}
+ul {
+  padding-left: 1.5rem;
+}
+li {
+  margin-bottom: 0.5rem;
+}
 @media (max-width: 768px) {
   nav {
     flex-direction: column;
     align-items: center;
   }
-
   nav a {
     margin: 0.5rem 0;
     width: 100%;
     text-align: center;
   }
-
-  main, 
-  .form-container, 
-  .vote-container, 
-  .scores-container, 
-  .about-container {
+  main {
     padding: 1rem;
     margin: 1rem;
   }
-
-  table th, 
+  table th,
   table td {
     font-size: 0.9rem;
     padding: 0.5rem;
   }
 }
-
 @media (max-width: 480px) {
   body {
     font-size: 14px;
   }
-
-  header, footer {
+  header,
+  footer {
     padding: 0.5rem;
   }
-
   nav a {
     padding: 0.4rem 0.8rem;
     font-size: 0.9rem;
   }
 }
+
