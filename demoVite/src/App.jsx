@@ -1,19 +1,20 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/navbar.jsx";
-import Home from "./components/home.jsx";
-import About from "./components/about.jsx";
-import Play from "./components/play.jsx";
-import Scores from "./components/scores.jsx";
+import NavBar from "./components/navbar";
+import Home from "./components/home";
+import About from "./components/about";
+import Play from "./components/play";
+import Scores from "./components/scores";
+import "./App.css";
 
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
+      <NavBar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/play" element={<Play />} />
-        <Route path="/scores" element={<Scores />} />
+        <Route path="/" element={<div className="page"><Home /></div>} />
+        <Route path="/play" element={<div className="page"><Play /></div>} />
+        <Route path="/scores" element={<div className="page"><Scores /></div>} />
+        <Route path="/about" element={<div className="page"><About /></div>} />
       </Routes>
     </BrowserRouter>
   );
