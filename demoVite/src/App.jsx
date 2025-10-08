@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/navbar";
-import Home from "./components/home";
-import About from "./components/about";
-import Play from "./components/play";
-import Scores from "./components/scores";
+import Navbar from "./components/navbar.jsx";
+import Home from "./components/home.jsx";
+import About from "./components/about.jsx";
+import Play from "./components/play.jsx";
+import Scores from "./components/scores.jsx";
 
 function App() {
   return (
