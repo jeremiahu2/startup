@@ -4,6 +4,7 @@ import Home from "./components/home";
 import About from "./components/about";
 import Play from "./components/play";
 import Scores from "./components/scores";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 
 function App() {
