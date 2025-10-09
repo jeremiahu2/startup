@@ -5,7 +5,7 @@ export default function Home() {
       <p className="lead mb-4">
         Vote on your Favorite Pie Flavor, see the most poular flavors, and chat with other pie fans!
       </p>
-      <form method="get" action="/play" className="mx-auto" style={{maxWidth: "400ox"}}>
+      <form method="get" action="/play" className="mx-auto" style={{maxWidth: "400px"}}>
         <div className="mb-3 input-group">
           <span className="input-group-text">@</span>
           <input type="text" className="form-control" placeholder="your@email.com"/>
