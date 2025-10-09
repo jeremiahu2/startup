@@ -21,7 +21,7 @@ export default function Home() {
       </form>
       <footer className="text-center mt-5 py-3 border-top">
         <span>Created by Jeremiah Barton</span><br />
-        <a href="https://github.com/jeremiahu2/startup"></a>
+        <a href="https://github.com/jeremiahu2/startup">Github</a>
       </footer>
     </main>
   );
