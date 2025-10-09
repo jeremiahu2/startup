@@ -1,12 +1,12 @@
 export default function Play() {
     return (
         <main className="container text-center">
-            <h1 classNAme="mb-3">Vote for Your Favorite Pie</h1>
+            <h1 className="mb-3">Vote for Your Favorite Pie</h1>
             <form className="mx-auto" style={{maxWidth: "400px"}}>
                 {[
                     ["apple", "Apple Pie 🍎"],
                     ["pumpkin", "Pumpkin Pie 🎃"],
-                    ["cherry", "Cherry Pie 🍒"]
+                    ["cherry", "Cherry Pie 🍒"],
                     ["peach", "Peach Pie 🍑"],
                 ].map(([id, label]) => (
                     <div key={id} className="mb-3 form-check">
