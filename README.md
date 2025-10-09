@@ -97,9 +97,13 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Bundled using Vite** - I did not complete this part of the deliverable.
-- [ ] **Components** - I did not complete this part of the deliverable.
-- [ ] **Router** - I did not complete this part of the deliverable.
+- [x] **Bundled using Vite** - I set up the project using Vite as the build tool and confirmed that the app runs locally using `npm run dev`.
+- [x] **Components** - I created .jsx files and made them reflect my previous HTML pages as React components. These include:
+  - `home.jsx` – Displays the welcome message and login.
+  - `about.jsx` – Displays the app’s purpose and future features.
+  - `play.jsx` – Allows users to “vote” or interact with the app.
+  - `scores.jsx` – Shows pie voting results.
+- [x] **Router** - I implemented React Router (`react-router-dom`) for client-side navigation between pages. Each route corresponds to one of the main components, allowing users to switch views without reloading the page.
 
 ## 🚀 React part 2: Reactivity deliverable
 
