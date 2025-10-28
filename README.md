@@ -109,8 +109,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **All functionality implemented or mocked out** - I did not complete this part of the deliverable.
-- [ ] **Hooks** - I did not complete this part of the deliverable.
+- [x] **All functionality implemented or mocked out** - I added reactivity across the app. The Home page stores user login data (email and password) using localStorage, and the Play page stores votes, which the Scores page displays after pulling them from localStorage. 
+- [x] **Hooks** - I implemented React hooks useState and useEffect to manage local state and lifecycle events. Each instance updates reactively based on user interaction and stored data.
 
 ## 🚀 Service deliverable
 
