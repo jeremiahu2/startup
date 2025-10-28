@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavBar from "./components/navbar";
 import Home from "./components/home";
 import About from "./components/about";
@@ -7,9 +7,9 @@ import Scores from "./components/scores";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 
-function App() {
+export default function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <NavBar />
       <Routes>
         <Route path="/" element={<div className="page"><Home /></div>} />
@@ -17,7 +17,6 @@ function App() {
         <Route path="/scores" element={<div className="page"><Scores /></div>} />
         <Route path="/about" element={<div className="page"><About /></div>} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
-export default App;
