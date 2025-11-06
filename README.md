@@ -116,13 +116,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Supports registration, login, logout, and restricted endpoint** - I did not complete this part of the deliverable.
-
+- [x] **Node.js/Express HTTP service** - I created a backend service using Node.js and Express, which provides endpoints for registration, login, logout, a restricted secret endpoint, and fetching a quote from a third-party API (ZenQuotes).
+- [x] **Static middleware for frontend** - I configured Express to serve static frontend files.
+- [x] **Calls to third party endpoints** - I implemented a quote endpoint in the backend that fetches quotes from the ZenQuotes API and sends them to the frontend.
+- [x] **Backend service endpoints** - The backend provides register, login, logout, quote, and a secret endpoint.
+- [x] **Frontend calls service endpoints** - The frontend Home page uses calls register, login, and logout, while the About page calls quote with Fetch.
+- [ ] **Supports registration, login, logout, and restricted endpoint** - The application supports full authentication flow where users can register and log in, logged-in users can log out, and the secret endpoint verifies the session cookie and only allows access to authenticated users.
 
 ## 🚀 DB deliverable
 
