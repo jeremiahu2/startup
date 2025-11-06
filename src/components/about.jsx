@@ -1,4 +1,25 @@
+import { useState, useEffect } from "react";
+
 export default function About() {
+  const [quote, setQuote] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchQuote() {
+      try {
+        const response = await fetch("/api/quote"); 
+        const data = await response.json();
+        setQuote(data.content || "Pie is awesome!");
+      } catch (err) {
+        console.error("Failed to fetch quote:", err);
+        setQuote("Pie is awesome!");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchQuote();
+  }, []);
+
   return (
     <main className="container text-center">
       <h1 className="mb-3">About the Pie Vote App</h1>
@@ -18,9 +39,15 @@ export default function About() {
         <li className="list-group-item">Live chat via WebSockets</li>
         <li className="list-group-item">Pie chart visualization using Chart.js</li>
       </ul>
-      <blockquote className="blockquote">
-        <p className="mb-0"><em>"Any way you slice it, pie brings people together."</em></p>
-      </blockquote>
+
+      {loading ? (
+        <p>Loading quote...</p>
+      ) : (
+        <blockquote className="blockquote mb-4">
+          <p className="mb-0"><em>"{quote}"</em></p>
+        </blockquote>
+      )}
+
       <footer className="text-center mt-5 py-3 border-top">
         <span>Created by Jeremiah Barton</span><br />
         <a href="https://github.com/jeremiahu2/startup">GitHub</a>

@@ -54,9 +54,16 @@ app.get('/api/secret', (req, res) => {
 });
 
 app.get('/api/quote', async (req, res) => {
-  const response = await fetch('https://api.quotable.io/random');
-  const data = await response.json();
-  res.send(data);
+  try {
+    const fetch = require('node-fetch');
+    const response = await fetch('https://zenquotes.io/api/random');
+    const data = await response.json();
+    const quote = data[0]?.q + " — " + data[0]?.a;
+    res.send({ content: quote });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ content: "Pie is awesome!" });
+  }
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

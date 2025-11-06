@@ -3,22 +3,7 @@ import { useState, useEffect } from "react";
 export default function Home() {
   const [email, setEmail] = useState(localStorage.getItem("email") || "");
   const [password, setPassword] = useState("");
-  const [quote, setQuote] = useState("");
   const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem("email"));
-
-  async function getQuote() {
-    try {
-      const response = await fetch("/api/quote");
-      const data = await response.json();
-      setQuote(data.content || "No quote available");
-    } catch (err) {
-      console.error("Error fetching quote:", err);
-    }
-  }
-
-  useEffect(() => {
-    getQuote();
-  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -90,7 +75,6 @@ export default function Home() {
       {loggedIn ? (
         <>
           <h3>Hi, {email}!</h3>
-          <p className="fst-italic">{quote}</p>
           <button className="btn btn-secondary" onClick={handleLogout}>
             Logout
           </button>
