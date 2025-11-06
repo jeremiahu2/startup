@@ -10,11 +10,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('public'));
 
-// Placeholder Endpoint
 app.get('/api/hello', (req, res) => {
-  res.send({ message: 'Hello from your startup backend!' });
+  res.send({ msg: 'Hello from backend!' });
 });
 
 app.listen(port, () => {
-  console.log(`Startup service listening on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });
