@@ -2,6 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
+import { connectToDB, getDB } from './db.js';
 
 const app = express();
 app.use(express.json());
@@ -9,6 +10,8 @@ app.use(cookieParser());
 app.use(express.static('public'));
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
+
+await connectToDB();
 
 let users = {};
 let sessions = {};
