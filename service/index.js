@@ -1,7 +1,8 @@
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const bcrypt = require('bcryptjs');
-const { v4: uuidv4 } = require('uuid');
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import bcrypt from 'bcryptjs';
+import { v4 as uuidv4 } from 'uuid';
+import fetch from 'node-fetch';
 import { connectToDB, getDB } from './db.js';
 
 const app = express();
@@ -12,53 +13,52 @@ app.use(express.static('public'));
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 await connectToDB();
-
-let users = {};
-let sessions = {};
+const db = getDB();
 
 app.post('/api/register', async (req, res) => {
   const { username, password } = req.body;
-  if (users[username]) {
+  const existing = await db.collection('users').findOne({ username });
+  if (existing) {
     res.status(409).send({ msg: 'User already exists' });
     return;
   }
   const hashed = await bcrypt.hash(password, 10);
-  users[username] = hashed;
+  await db.collection('users').insertOne({ username, password: hashed });
   res.send({ msg: 'User registered successfully' });
 });
 
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
-  const hashed = users[username];
-  if (!hashed || !(await bcrypt.compare(password, hashed))) {
+  const user = await db.collection('users').findOne({ username });
+  if (!user || !(await bcrypt.compare(password, user.password))) {
     res.status(401).send({ msg: 'Invalid credentials' });
     return;
   }
   const sessionId = uuidv4();
-  sessions[sessionId] = username;
+  await db.collection('sessions').insertOne({ sessionId, username });
   res.cookie('sessionId', sessionId, { httpOnly: true });
   res.send({ msg: 'Login successful' });
 });
 
-app.post('/api/logout', (req, res) => {
+app.post('/api/logout', async (req, res) => {
   const sessionId = req.cookies.sessionId;
-  delete sessions[sessionId];
+  await db.collection('sessions').deleteOne({ sessionId });
   res.clearCookie('sessionId');
   res.send({ msg: 'Logged out' });
 });
 
-app.get('/api/secret', (req, res) => {
+app.get('/api/secret', async (req, res) => {
   const sessionId = req.cookies.sessionId;
-  if (!sessionId || !sessions[sessionId]) {
+  const session = await db.collection('sessions').findOne({ sessionId });
+  if (!session) {
     res.status(401).send({ msg: 'Unauthorized' });
     return;
   }
-  res.send({ msg: `Welcome ${sessions[sessionId]}! You found a secret endpoint.` });
+  res.send({ msg: `Welcome ${session.username}! You found a secret endpoint.` });
 });
 
 app.get('/api/quote', async (req, res) => {
   try {
-    const fetch = require('node-fetch');
     const response = await fetch('https://zenquotes.io/api/random');
     const data = await response.json();
     const quote = data[0]?.q + " — " + data[0]?.a;
@@ -69,4 +69,4 @@ app.get('/api/quote', async (req, res) => {
   }
 });
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+app.listen(port, () => console.log(`✅ Listening on port ${port}`));
