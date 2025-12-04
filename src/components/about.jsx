@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function About() {
   const [quote, setQuote] = useState("");
@@ -33,13 +33,6 @@ export default function About() {
         The Pie Vote App lets users vote for their favorite pie flavor,
         see live results, and chat with other pie fans!
       </p>
-      <h3>Future Features:</h3>
-      <ul className="list-group mx-auto mb-4" style={{ maxWidth: "400px" }}>
-        <li className="list-group-item">Database storage of votes</li>
-        <li className="list-group-item">Live chat via WebSockets</li>
-        <li className="list-group-item">Pie chart visualization using Chart.js</li>
-      </ul>
-
       {loading ? (
         <p>Loading quote...</p>
       ) : (
@@ -47,7 +40,6 @@ export default function About() {
           <p className="mb-0"><em>"{quote}"</em></p>
         </blockquote>
       )}
-
       <footer className="text-center mt-5 py-3 border-top">
         <span>Created by Jeremiah Barton</span><br />
         <a href="https://github.com/jeremiahu2/startup">GitHub</a>

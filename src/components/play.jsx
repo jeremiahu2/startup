@@ -1,18 +1,37 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Play() {
   const [selectedPie, setSelectedPie] = useState("");
-  const [votes, setVotes] = useState(JSON.parse(localStorage.getItem("votes") || "{}"));
+  const [votes, setVotes] = useState({});
+  const fetchVotes = async () => {
+    try {
+      const res = await fetch("/api/votes");
+      const data = await res.json();
+      setVotes(data);
+    } catch (err) {
+      console.error("Failed to fetch votes:", err);
+    }
+  };
+  useEffect(() => {
+    fetchVotes();
+  }, []);
 
-  function handleVote(e) {
+  async function handleVote(e) {
     e.preventDefault();
     if (!selectedPie) return alert("Please select a pie!");
-
-    const updatedVotes = { ...votes };
-    updatedVotes[selectedPie] = (updatedVotes[selectedPie] || 0) + 1;
-    setVotes(updatedVotes);
-    localStorage.setItem("votes", JSON.stringify(updatedVotes));
-    alert(`You voted for ${selectedPie} pie!`);
+    try {
+      const res = await fetch("/api/vote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pieFlavor: selectedPie }),
+      });
+      const data = await res.json();
+      alert(data.msg);
+      fetchVotes();
+    } catch (err) {
+      console.error("Vote error:", err);
+      alert("Failed to submit vote");
+    }
   }
 
   return (
@@ -44,7 +63,6 @@ export default function Play() {
           Reset
         </button>
       </form>
-
       <footer className="text-center mt-5 py-3 border-top">
         <span>Created by Jeremiah Barton</span><br />
         <a href="https://github.com/jeremiahu2/startup">GitHub</a>
