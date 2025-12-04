@@ -121,14 +121,14 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [x] **Calls to third party endpoints** - I implemented a quote endpoint in the backend that fetches quotes from the ZenQuotes API and sends them to the frontend.
 - [x] **Backend service endpoints** - The backend provides register, login, logout, quote, and a secret endpoint.
 - [x] **Frontend calls service endpoints** - The frontend Home page uses calls register, login, and logout, while the About page calls quote with Fetch.
-- [ ] **Supports registration, login, logout, and restricted endpoint** - The application supports full authentication flow where users can register and log in, logged-in users can log out, and the secret endpoint verifies the session cookie and only allows access to authenticated users.
+- [x] **Supports registration, login, logout, and restricted endpoint** - The application supports full authentication flow where users can register and log in, log out, and the secret endpoint verifies the session cookie and only allows access to authenticated users.
 
 ## 🚀 DB deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
+- [x] **Stores data in MongoDB** - My backend connects to MongoDB Atlas using the `db.js` file to persist user and application data.
+- [x] **Stores credentials in MongoDB** - I updated signup and login endpoints to validate users from the database.
 
 ## 🚀 WebSocket deliverable
 
