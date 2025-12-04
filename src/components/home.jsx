@@ -1,14 +1,36 @@
-export default function Home({ setLoggedIn }) {
+import { useState, useEffect, useRef } from "react";
+
+export default function Home() {
   const [email, setEmail] = useState(localStorage.getItem("email") || "");
   const [password, setPassword] = useState("");
-  const [loggedIn, setLocalLoggedIn] = useState(!!localStorage.getItem("email"));
+  const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem("email"));
+  const [messages, setMessages] = useState([]);
+  const [chatInput, setChatInput] = useState("");
+  const ws = useRef(null);
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  useEffect(() => {
+    if (loggedIn) {
+      ws.current = new WebSocket(`ws://${window.location.host}/ws`);
+
+      ws.current.onopen = () => console.log("WebSocket connected");
+      ws.current.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        setMessages((prev) => [...prev, data.msg]);
+      };
+      ws.current.onclose = () => console.log("WebSocket disconnected");
+
+      return () => ws.current.close();
+    }
+  }, [loggedIn]);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!email || !password) {
-      alert("Please enter both email and password!");
-      return;
-    }
+    if (!email || !password) return alert("Please enter both email and password!");
     try {
       const response = await fetch("/api/login", {
         method: "POST",
@@ -17,7 +39,6 @@ export default function Home({ setLoggedIn }) {
       });
       if (response.ok) {
         localStorage.setItem("email", email);
-        setLocalLoggedIn(true);
         setLoggedIn(true);
         alert(`Welcome, ${email}!`);
       } else {
@@ -26,7 +47,7 @@ export default function Home({ setLoggedIn }) {
       }
     } catch (err) {
       console.error("Login error:", err);
-      alert("Login failed — check the console for details.");
+      alert("Login failed — check console for details.");
     }
   }
 
@@ -39,15 +60,11 @@ export default function Home({ setLoggedIn }) {
     localStorage.removeItem("email");
     setEmail("");
     setPassword("");
-    setLocalLoggedIn(false);
     setLoggedIn(false);
   }
 
   async function handleRegister() {
-    if (!email || !password) {
-      alert("Please enter both email and password!");
-      return;
-    }
+    if (!email || !password) return alert("Please enter both email and password!");
     try {
       const response = await fetch("/api/register", {
         method: "POST",
@@ -62,9 +79,15 @@ export default function Home({ setLoggedIn }) {
       }
     } catch (err) {
       console.error("Register error:", err);
-      alert("Registration failed — check the console for details.");
+      alert("Registration failed — check console for details.");
     }
   }
+
+  const sendMessage = () => {
+    if (!chatInput.trim()) return;
+    ws.current.send(JSON.stringify({ username: email, msg: chatInput }));
+    setChatInput("");
+  };
 
   return (
     <main className="container text-center">
@@ -75,9 +98,28 @@ export default function Home({ setLoggedIn }) {
       {loggedIn ? (
         <>
           <h3>Hi, {email}!</h3>
-          <button className="btn btn-secondary" onClick={handleLogout}>
+          <button className="btn btn-secondary mb-3" onClick={handleLogout}>
             Logout
           </button>
+          <div className="chat-container">
+            <div className="chat-messages">
+              {messages.map((msg, i) => (
+                <div key={i}>{msg}</div>
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
+            <div className="chat-input">
+              <input
+                type="text"
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                placeholder="Type a message..."
+              />
+              <button onClick={sendMessage} className="btn btn-primary">
+                Send
+              </button>
+            </div>
+          </div>
         </>
       ) : (
         <form onSubmit={handleSubmit} className="mx-auto" style={{ maxWidth: "400px" }}>
@@ -102,8 +144,12 @@ export default function Home({ setLoggedIn }) {
             />
           </div>
           <div className="d-flex justify-content-between">
-            <button type="submit" className="btn btn-primary">Login</button>
-            <button type="button" className="btn btn-success" onClick={handleRegister}>Register</button>
+            <button type="submit" className="btn btn-primary">
+              Login
+            </button>
+            <button type="button" className="btn btn-success" onClick={handleRegister}>
+              Register
+            </button>
           </div>
         </form>
       )}

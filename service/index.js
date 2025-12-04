@@ -1,3 +1,4 @@
+import React, { useState, useEffect, useRef } from "react";
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import bcrypt from 'bcryptjs';
@@ -59,9 +60,7 @@ async function authenticate(req, res, next) {
   const session = await db.collection('sessions').findOne({
     sessionId: req.cookies.sessionId,
   });
-  if (!session) {
-    return res.status(401).send({ msg: 'Unauthorized' });
-  }
+  if (!session) return res.status(401).send({ msg: 'Unauthorized' });
   req.username = session.username;
   next();
 }
@@ -91,6 +90,7 @@ const server = app.listen(port, () => {
 });
 
 const wss = new WebSocketServer({ noServer: true });
+const clients = new Set();
 
 server.on('upgrade', (request, socket, head) => {
   if (request.url === '/ws') {
@@ -103,13 +103,24 @@ server.on('upgrade', (request, socket, head) => {
 });
 
 wss.on('connection', (ws) => {
+  clients.add(ws);
   console.log('⚡ WebSocket connected');
   ws.send(JSON.stringify({ msg: 'Hello from the startup server!' }));
   ws.on('message', (data) => {
-    console.log('📩 WebSocket message:', data.toString());
-    ws.send(JSON.stringify({ msg: `Server received: ${data}` }));
+    try {
+      const message = JSON.parse(data);
+      const formatted = `${message.username}: ${message.msg}`;
+      clients.forEach((client) => {
+        if (client.readyState === ws.OPEN) {
+          client.send(JSON.stringify({ msg: formatted }));
+        }
+      });
+    } catch (err) {
+      console.error("Failed to parse WebSocket message:", err);
+    }
   });
   ws.on('close', () => {
+    clients.delete(ws);
     console.log('🔌 WebSocket disconnected');
   });
 });
