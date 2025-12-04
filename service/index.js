@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import fetch from 'node-fetch';
+import { WebSocketServer } from 'ws';
 import { connectToDB, getDB } from './db.js';
 
 const app = express();
@@ -35,8 +36,15 @@ app.post('/api/login', async (req, res) => {
     return;
   }
   const sessionId = uuidv4();
-  await db.collection('sessions').insertOne({ sessionId, username });
-  res.cookie('sessionId', sessionId, { httpOnly: true });
+  await db.collection('sessions').insertOne({
+    sessionId,
+    username,
+    createdAt: new Date(),
+  });
+  res.cookie('sessionId', sessionId, {
+    httpOnly: true,
+    sameSite: 'strict',
+  });
   res.send({ msg: 'Login successful' });
 });
 
@@ -47,21 +55,26 @@ app.post('/api/logout', async (req, res) => {
   res.send({ msg: 'Logged out' });
 });
 
-app.get('/api/secret', async (req, res) => {
-  const sessionId = req.cookies.sessionId;
-  const session = await db.collection('sessions').findOne({ sessionId });
+async function authenticate(req, res, next) {
+  const session = await db.collection('sessions').findOne({
+    sessionId: req.cookies.sessionId,
+  });
   if (!session) {
-    res.status(401).send({ msg: 'Unauthorized' });
-    return;
+    return res.status(401).send({ msg: 'Unauthorized' });
   }
-  res.send({ msg: `Welcome ${session.username}! You found a secret endpoint.` });
+  req.username = session.username;
+  next();
+}
+
+app.get('/api/secret', authenticate, (req, res) => {
+  res.send({ msg: `Welcome ${req.username}! This is a secret endpoint.` });
 });
 
 app.get('/api/quote', async (req, res) => {
   try {
     const response = await fetch('https://zenquotes.io/api/random');
     const data = await response.json();
-    const quote = data[0]?.q + " — " + data[0]?.a;
+    const quote = data[0]?.q + ' — ' + data[0]?.a;
     res.send({ content: quote });
   } catch (err) {
     console.error(err);
@@ -69,4 +82,34 @@ app.get('/api/quote', async (req, res) => {
   }
 });
 
-app.listen(port, () => console.log(`✅ Listening on port ${port}`));
+app.get('/ws', (req, res) => {
+  res.status(426).send('WebSocket endpoint');
+});
+
+const server = app.listen(port, () => {
+  console.log(`🚀 HTTP listening on port ${port}`);
+});
+
+const wss = new WebSocketServer({ noServer: true });
+
+server.on('upgrade', (request, socket, head) => {
+  if (request.url === '/ws') {
+    wss.handleUpgrade(request, socket, head, (ws) => {
+      wss.emit('connection', ws, request);
+    });
+  } else {
+    socket.destroy();
+  }
+});
+
+wss.on('connection', (ws) => {
+  console.log('⚡ WebSocket connected');
+  ws.send(JSON.stringify({ msg: 'Hello from the startup server!' }));
+  ws.on('message', (data) => {
+    console.log('📩 WebSocket message:', data.toString());
+    ws.send(JSON.stringify({ msg: `Server received: ${data}` }));
+  });
+  ws.on('close', () => {
+    console.log('🔌 WebSocket disconnected');
+  });
+});

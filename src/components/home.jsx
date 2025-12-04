@@ -1,9 +1,7 @@
-import { useState, useEffect } from "react";
-
-export default function Home() {
+export default function Home({ setLoggedIn }) {
   const [email, setEmail] = useState(localStorage.getItem("email") || "");
   const [password, setPassword] = useState("");
-  const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem("email"));
+  const [loggedIn, setLocalLoggedIn] = useState(!!localStorage.getItem("email"));
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -19,6 +17,7 @@ export default function Home() {
       });
       if (response.ok) {
         localStorage.setItem("email", email);
+        setLocalLoggedIn(true);
         setLoggedIn(true);
         alert(`Welcome, ${email}!`);
       } else {
@@ -40,6 +39,7 @@ export default function Home() {
     localStorage.removeItem("email");
     setEmail("");
     setPassword("");
+    setLocalLoggedIn(false);
     setLoggedIn(false);
   }
 
@@ -102,12 +102,8 @@ export default function Home() {
             />
           </div>
           <div className="d-flex justify-content-between">
-            <button type="submit" className="btn btn-primary">
-              Login
-            </button>
-            <button type="button" className="btn btn-success" onClick={handleRegister}>
-              Register
-            </button>
+            <button type="submit" className="btn btn-primary">Login</button>
+            <button type="button" className="btn btn-success" onClick={handleRegister}>Register</button>
           </div>
         </form>
       )}

@@ -1,11 +1,11 @@
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export default function NavBar() {
+export default function NavBar({ loggedIn }) {
   return (
     <nav style={styles.nav}>
       <Link style={styles.link} to="/">Home</Link>
-      <Link style={styles.link} to="/play">Play</Link>
-      <Link style={styles.link} to="/scores">Scores</Link>
+      {loggedIn && <Link style={styles.link} to="/play">Play</Link>}
+      {loggedIn && <Link style={styles.link} to="/scores">Scores</Link>}
       <Link style={styles.link} to="/about">About</Link>
     </nav>
   );
@@ -30,4 +30,3 @@ const styles = {
     transition: "color 0.3s ease, transform 0.2s ease",
   },
 };
-
