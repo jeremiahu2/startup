@@ -1,30 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
+import Chat from './chat';
 
 export default function Home({ loggedIn, setLoggedIn }) {
   const [email, setEmail] = useState(localStorage.getItem('email') || '');
   const [password, setPassword] = useState('');
-  const [messages, setMessages] = useState([]);
-  const [chatInput, setChatInput] = useState('');
-  const ws = useRef(null);
-  const messagesEndRef = useRef(null);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
-  useEffect(() => {
-    if (loggedIn) {
-      const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-      ws.current = new WebSocket(`${protocol}://${window.location.host}/ws`);
-      ws.current.onopen = () => console.log('WebSocket connected');
-      ws.current.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        setMessages((prev) => [...prev, data.msg]);
-      };
-      ws.current.onclose = () => console.log('WebSocket disconnected');
-      return () => ws.current.close();
-    }
-  }, [loggedIn]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -81,12 +60,6 @@ export default function Home({ loggedIn, setLoggedIn }) {
     }
   }
 
-  const sendMessage = () => {
-    if (!chatInput.trim()) return;
-    ws.current.send(JSON.stringify({ username: email, msg: chatInput }));
-    setChatInput('');
-  };
-
   return (
     <main className="container text-center">
       <h1 className="mb-3">Welcome to the Pie Vote App</h1>
@@ -99,25 +72,7 @@ export default function Home({ loggedIn, setLoggedIn }) {
           <button className="btn btn-secondary mb-3" onClick={handleLogout}>
             Logout
           </button>
-          <div className="chat-container">
-            <div className="chat-messages">
-              {messages.map((msg, i) => (
-                <div key={i}>{msg}</div>
-              ))}
-              <div ref={messagesEndRef} />
-            </div>
-            <div className="chat-input">
-              <input
-                type="text"
-                value={chatInput}
-                onChange={(e) => setChatInput(e.target.value)}
-                placeholder="Type a message..."
-              />
-              <button onClick={sendMessage} className="btn btn-primary">
-                Send
-              </button>
-            </div>
-          </div>
+          <Chat loggedIn={loggedIn} username={email} />
         </>
       ) : (
         <form onSubmit={handleSubmit} className="mx-auto" style={{ maxWidth: '400px' }}>

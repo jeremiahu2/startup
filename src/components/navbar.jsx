@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import React, { useState, useEffect, useRef } from "react";
 
 export default function NavBar({ loggedIn }) {
   return (

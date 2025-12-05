@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 
 export default function Scores() {
   const [votes, setVotes] = useState({});
