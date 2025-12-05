@@ -45,9 +45,9 @@ app.post('/api/register', async (req, res) => {
 app.post('/api/login', async (req, res) => {
   try {
     const { username, password } = req.body;
+    if (!username || !password) return res.status(400).json({ msg: 'Username and password required' });
     const user = await db.collection('users').findOne({ username });
-    if (!user || !(await bcrypt.compare(password, user.password)))
-      return res.status(401).json({ msg: 'Invalid credentials' });
+    if (!user || !(await bcrypt.compare(password, user.password))) return res.status(401).json({ msg: 'Invalid credentials' });
     const sessionId = uuidv4();
     await db.collection('sessions').insertOne({ sessionId, username, createdAt: new Date() });
     res.cookie('sessionId', sessionId, { httpOnly: true, sameSite: 'strict' });
@@ -78,7 +78,7 @@ app.get('/api/quote', async (req, res) => {
     res.json({ content: quote });
   } catch (err) {
     console.error('Quote fetch error:', err);
-    res.status(500).json({ content: 'Pie is awesome!' });
+    res.status(500).json({ content: "Pie is awesome!" });
   }
 });
 
@@ -120,57 +120,24 @@ const wss = new WebSocketServer({ noServer: true });
 const clients = new Set();
 
 function broadcast(msg) {
-  for (const client of clients) {
-    if (client.readyState === WebSocket.OPEN) client.send(msg);
-  }
+  clients.forEach(client => {
+    if (client.readyState === client.OPEN) client.send(msg);
+  });
 }
 
 server.on('upgrade', (request, socket, head) => {
-  if (request.url === '/ws') {
-    wss.handleUpgrade(request, socket, head, (ws) => {
-      wss.emit('connection', ws, request);
-    });
+  if (request.url.startsWith('/ws')) {
+    wss.handleUpgrade(request, socket, head, ws => wss.emit('connection', ws, request));
   } else {
     socket.destroy();
   }
 });
 
-function heartbeat() {
-  this.isAlive = true;
-}
-
-wss.on('connection', (ws) => {
-  ws.isAlive = true;
-  ws.on('pong', heartbeat);
+wss.on('connection', ws => {
   clients.add(ws);
   console.log('⚡ WebSocket connected');
-
-  ws.on('message', (msg) => {
-    try {
-      const data = JSON.parse(msg);
-      if (data.msg && data.username) {
-        broadcast(JSON.stringify({ msg: `${data.username}: ${data.msg}` }));
-      }
-    } catch (err) {
-      console.error('WebSocket message error:', err);
-    }
-  });
-
   ws.on('close', () => {
     clients.delete(ws);
     console.log('🔌 WebSocket disconnected');
   });
-  ws.on('error', (err) => console.error('WebSocket error:', err));
 });
-
-setInterval(() => {
-  for (const ws of clients) {
-    if (!ws.isAlive) {
-      clients.delete(ws);
-      ws.terminate();
-      continue;
-    }
-    ws.isAlive = false;
-    ws.ping();
-  }
-}, 30000);
