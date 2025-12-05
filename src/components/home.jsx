@@ -13,18 +13,40 @@ export default function Home({ loggedIn, setLoggedIn }) {
   }, [messages]);
 
   useEffect(() => {
-    if (loggedIn) {
-      const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-      ws.current = new WebSocket(`${protocol}://${window.location.host}/ws`);
-      ws.current.onopen = () => console.log('WebSocket connected');
-      ws.current.onmessage = (event) => {
-        const data = JSON.parse(event.data);
+    if (!loggedIn) return;
+    if (ws.current) return;
+    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    ws.current = new WebSocket(`${protocol}://${window.location.host}/ws`);
+    ws.current.onopen = () => console.log('WebSocket connected');
+    ws.current.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.msg) {
         setMessages((prev) => [...prev, data.msg]);
-      };
-      ws.current.onclose = () => console.log('WebSocket disconnected');
-      return () => ws.current.close();
-    }
+      } else if (data.type === 'votes') {
+        const voteText = Object.entries(data.data)
+          .map(([flavor, count]) => `${flavor}: ${count}`)
+          .join(' | ');
+        setMessages((prev) => [...prev, `📊 Vote counts: ${voteText}`]);
+      }
+    };
+    ws.current.onclose = () => {
+      console.log('WebSocket disconnected');
+      ws.current = null;
+    };
+    return () => {
+      if (ws.current && (ws.current.readyState === WebSocket.OPEN)) {
+        ws.current.close();
+        ws.current = null;
+      } 
+    };
   }, [loggedIn]);
+
+
+  const sendMessage = () => {
+    if (!chatInput.trim()) return;
+    ws.current.send(JSON.stringify({ username: email, msg: chatInput }));
+    setChatInput('');
+  };
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -59,6 +81,7 @@ export default function Home({ loggedIn, setLoggedIn }) {
     setEmail('');
     setPassword('');
     setLoggedIn(false);
+    setMessages([]);
   }
 
   async function handleRegister() {
@@ -80,12 +103,6 @@ export default function Home({ loggedIn, setLoggedIn }) {
       alert('Registration failed — check console for details.');
     }
   }
-
-  const sendMessage = () => {
-    if (!chatInput.trim()) return;
-    ws.current.send(JSON.stringify({ username: email, msg: chatInput }));
-    setChatInput('');
-  };
 
   return (
     <main className="container text-center">

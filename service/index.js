@@ -5,12 +5,24 @@ import { v4 as uuidv4 } from 'uuid';
 import fetch from 'node-fetch';
 import { WebSocketServer } from 'ws';
 import { connectToDB, getDB } from './db.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
 const port = process.env.PORT || 4000;
+
+const frontendPath = path.join(__dirname, 'public');
+app.use(express.static(frontendPath));
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api') || req.path.startsWith('/ws')) return next();
+  res.sendFile(path.join(frontendPath, 'index.html'));
+});
 
 await connectToDB();
 const db = getDB();
@@ -136,6 +148,18 @@ server.on('upgrade', (request, socket, head) => {
 wss.on('connection', ws => {
   clients.add(ws);
   console.log('⚡ WebSocket connected');
+
+  ws.on('message', (message) => {
+    try {
+      const data = JSON.parse(message);
+      if (data.msg && data.username) {
+        broadcast(JSON.stringify({ msg: `${data.username}: ${data.msg}` }));
+      }
+    } catch (err) {
+      console.error('WebSocket message error:', err);
+    }
+  });
+
   ws.on('close', () => {
     clients.delete(ws);
     console.log('🔌 WebSocket disconnected');
