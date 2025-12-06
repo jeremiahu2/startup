@@ -1,20 +1,7 @@
-import React, { useState, useEffect, } from 'react';
+import React, { useState } from "react";
 
 export default function Play() {
   const [selectedPie, setSelectedPie] = useState("");
-  const [votes, setVotes] = useState({});
-  const fetchVotes = async () => {
-    try {
-      const res = await fetch("/api/votes");
-      const data = await res.json();
-      setVotes(data);
-    } catch (err) {
-      console.error("Failed to fetch votes:", err);
-    }
-  };
-  useEffect(() => {
-    fetchVotes();
-  }, []);
 
   async function handleVote(e) {
     e.preventDefault();
@@ -27,7 +14,7 @@ export default function Play() {
       });
       const data = await res.json();
       alert(data.msg);
-      fetchVotes();
+      setSelectedPie("");
     } catch (err) {
       console.error("Vote error:", err);
       alert("Failed to submit vote");
@@ -55,11 +42,7 @@ export default function Play() {
           </div>
         ))}
         <button type="submit" className="btn btn-primary me-2">Vote</button>
-        <button
-          type="reset"
-          className="btn btn-secondary"
-          onClick={() => setSelectedPie("")}
-        >
+        <button type="reset" className="btn btn-secondary" onClick={() => setSelectedPie("")}>
           Reset
         </button>
       </form>

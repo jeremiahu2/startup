@@ -17,69 +17,46 @@ app.use(cookieParser());
 
 const port = process.env.PORT || 4000;
 
-const frontendPath = path.join(__dirname, 'public');
-app.use(express.static(frontendPath));
-app.get('*', (req, res, next) => {
-  if (req.path.startsWith('/api') || req.path.startsWith('/ws')) return next();
-  res.sendFile(path.join(frontendPath, 'index.html'));
-});
-
 await connectToDB();
 const db = getDB();
 
-async function authenticate(req, res, next) {
-  try {
-    const session = await db.collection('sessions').findOne({ sessionId: req.cookies.sessionId });
-    if (!session) return res.status(401).json({ msg: 'Unauthorized' });
-    req.username = session.username;
-    next();
-  } catch (err) {
-    console.error('Authentication error:', err);
-    res.status(500).json({ msg: 'Internal server error' });
-  }
-}
-
 app.post('/api/register', async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    if (!username || !password) return res.status(400).json({ msg: 'Username and password required' });
-    const existing = await db.collection('users').findOne({ username });
-    if (existing) return res.status(409).json({ msg: 'User already exists' });
-    const hashed = await bcrypt.hash(password, 10);
-    await db.collection('users').insertOne({ username, password: hashed });
-    res.json({ msg: 'User registered successfully' });
-  } catch (err) {
-    console.error('Register error:', err);
-    res.status(500).json({ msg: 'Internal server error' });
-  }
+  const { username, password } = req.body;
+  const existing = await db.collection('users').findOne({ username });
+  if (existing) return res.status(409).send({ msg: 'User already exists' });
+  const hashed = await bcrypt.hash(password, 10);
+  await db.collection('users').insertOne({ username, password: hashed });
+  res.send({ msg: 'User registered successfully' });
 });
 
 app.post('/api/login', async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    if (!username || !password) return res.status(400).json({ msg: 'Username and password required' });
-    const user = await db.collection('users').findOne({ username });
-    if (!user || !(await bcrypt.compare(password, user.password))) return res.status(401).json({ msg: 'Invalid credentials' });
-    const sessionId = uuidv4();
-    await db.collection('sessions').insertOne({ sessionId, username, createdAt: new Date() });
-    res.cookie('sessionId', sessionId, { httpOnly: true, sameSite: 'strict' });
-    res.json({ msg: 'Login successful' });
-  } catch (err) {
-    console.error('Login error:', err);
-    res.status(500).json({ msg: 'Internal server error' });
-  }
+  const { username, password } = req.body;
+  const user = await db.collection('users').findOne({ username });
+  if (!user || !(await bcrypt.compare(password, user.password)))
+    return res.status(401).send({ msg: 'Invalid credentials' });
+
+  const sessionId = uuidv4();
+  await db.collection('sessions').insertOne({ sessionId, username, createdAt: new Date() });
+  res.cookie('sessionId', sessionId, { httpOnly: true, sameSite: 'strict' });
+  res.send({ msg: 'Login successful' });
 });
 
 app.post('/api/logout', async (req, res) => {
-  try {
-    const sessionId = req.cookies.sessionId;
-    if (sessionId) await db.collection('sessions').deleteOne({ sessionId });
-    res.clearCookie('sessionId');
-    res.json({ msg: 'Logged out' });
-  } catch (err) {
-    console.error('Logout error:', err);
-    res.status(500).json({ msg: 'Internal server error' });
-  }
+  const sessionId = req.cookies.sessionId;
+  if (sessionId) await db.collection('sessions').deleteOne({ sessionId });
+  res.clearCookie('sessionId');
+  res.send({ msg: 'Logged out' });
+});
+
+async function authenticate(req, res, next) {
+  const session = await db.collection('sessions').findOne({ sessionId: req.cookies.sessionId });
+  if (!session) return res.status(401).send({ msg: 'Unauthorized' });
+  req.username = session.username;
+  next();
+}
+
+app.get('/api/secret', authenticate, (req, res) => {
+  res.send({ msg: `Welcome ${req.username}! This is a secret endpoint.` });
 });
 
 app.get('/api/quote', async (req, res) => {
@@ -87,53 +64,59 @@ app.get('/api/quote', async (req, res) => {
     const response = await fetch('https://zenquotes.io/api/random');
     const data = await response.json();
     const quote = data[0]?.q + ' — ' + data[0]?.a;
-    res.json({ content: quote });
-  } catch (err) {
-    console.error('Quote fetch error:', err);
-    res.status(500).json({ content: "Pie is awesome!" });
-  }
-});
-
-app.post('/api/vote', authenticate, async (req, res) => {
-  try {
-    const { pieFlavor } = req.body;
-    if (!pieFlavor) return res.status(400).json({ msg: 'Pie flavor required' });
-    await db.collection('votes').deleteMany({ username: req.username });
-    await db.collection('votes').insertOne({ username: req.username, pieFlavor, createdAt: new Date() });
-    const allVotes = await db.collection('votes').find({}).toArray();
-    const voteCounts = allVotes.reduce((acc, vote) => {
-      acc[vote.pieFlavor] = (acc[vote.pieFlavor] || 0) + 1;
-      return acc;
-    }, {});
-    broadcast(JSON.stringify({ type: 'votes', data: voteCounts }));
-    res.json({ msg: `Voted for ${pieFlavor}` });
-  } catch (err) {
-    console.error('Vote error:', err);
-    res.status(500).json({ msg: 'Internal server error' });
+    res.send({ content: quote });
+  } catch {
+    res.status(500).send({ content: "Pie is awesome!" });
   }
 });
 
 app.get('/api/votes', async (req, res) => {
-  try {
-    const allVotes = await db.collection('votes').find({}).toArray();
-    const voteCounts = allVotes.reduce((acc, vote) => {
-      acc[vote.pieFlavor] = (acc[vote.pieFlavor] || 0) + 1;
-      return acc;
-    }, {});
-    res.json(voteCounts);
-  } catch (err) {
-    console.error('Error fetching votes:', err);
-    res.status(500).json({});
+  let votes = await db.collection('votes').findOne({ _id: 'pieVotes' });
+  if (!votes) {
+    votes = { _id: 'pieVotes', apple: 0, pumpkin: 0, cherry: 0, peach: 0 };
+    await db.collection('votes').insertOne(votes);
+  }
+  res.send({
+    apple: votes.apple,
+    pumpkin: votes.pumpkin,
+    cherry: votes.cherry,
+    peach: votes.peach
+  });
+});
+
+app.post('/api/vote', async (req, res) => {
+  const { pieFlavor } = req.body;
+  if (!['apple', 'pumpkin', 'cherry', 'peach'].includes(pieFlavor))
+    return res.status(400).send({ msg: 'Invalid pie flavor' });
+
+  await db.collection('votes').updateOne(
+    { _id: 'pieVotes' },
+    { $inc: { [pieFlavor]: 1 } },
+    { upsert: true }
+  );
+  const votes = await db.collection('votes').findOne({ _id: 'pieVotes' });
+  broadcast({ type: 'votes', data: votes });
+  res.send({ msg: `Your vote for ${pieFlavor} has been counted!` });
+});
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  } else {
+    res.status(404).send({ msg: 'API endpoint not found' });
   }
 });
 
-const server = app.listen(port, () => console.log(`🚀 HTTP listening on port ${port}`));
+const server = app.listen(port, () => console.log(`🚀 HTTP on ${port}`));
 const wss = new WebSocketServer({ noServer: true });
 const clients = new Set();
 
-function broadcast(msg) {
+function broadcast(msgObj) {
+  const msgStr = JSON.stringify(msgObj);
   clients.forEach(client => {
-    if (client.readyState === client.OPEN) client.send(msg);
+    if (client.readyState === client.OPEN) client.send(msgStr);
   });
 }
 
@@ -147,21 +130,12 @@ server.on('upgrade', (request, socket, head) => {
 
 wss.on('connection', ws => {
   clients.add(ws);
-  console.log('⚡ WebSocket connected');
-
-  ws.on('message', (message) => {
+  ws.send(JSON.stringify({ msg: 'Hello from the startup server!' }));
+  ws.on('message', data => {
     try {
-      const data = JSON.parse(message);
-      if (data.msg && data.username) {
-        broadcast(JSON.stringify({ msg: `${data.username}: ${data.msg}` }));
-      }
-    } catch (err) {
-      console.error('WebSocket message error:', err);
-    }
+      const parsed = JSON.parse(data);
+      if (parsed.username && parsed.msg) broadcast({ username: parsed.username, msg: parsed.msg });
+    } catch {}
   });
-
-  ws.on('close', () => {
-    clients.delete(ws);
-    console.log('🔌 WebSocket disconnected');
-  });
+  ws.on('close', () => clients.delete(ws));
 });

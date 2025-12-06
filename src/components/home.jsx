@@ -1,106 +1,109 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
 export default function Home({ loggedIn, setLoggedIn }) {
-  const [email, setEmail] = useState(localStorage.getItem('email') || '');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState(localStorage.getItem("email") || "");
+  const [password, setPassword] = useState("");
   const [messages, setMessages] = useState([]);
-  const [chatInput, setChatInput] = useState('');
+  const [chatInput, setChatInput] = useState("");
   const ws = useRef(null);
   const messagesEndRef = useRef(null);
 
+  const API_BASE = "https://startup.260domain.click"; // deployed API base
+
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   useEffect(() => {
     if (!loggedIn) return;
     if (ws.current) return;
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
     ws.current = new WebSocket(`${protocol}://${window.location.host}/ws`);
-    ws.current.onopen = () => console.log('WebSocket connected');
+    ws.current.onopen = () => console.log("WebSocket connected");
     ws.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      if (data.msg) {
-        setMessages((prev) => [...prev, data.msg]);
-      } else if (data.type === 'votes') {
+      if (data.username && data.msg) {
+        setMessages((prev) => [...prev, `${data.username}: ${data.msg}`]);
+      } else if (data.type === "votes") {
         const voteText = Object.entries(data.data)
           .map(([flavor, count]) => `${flavor}: ${count}`)
-          .join(' | ');
+          .join(" | ");
         setMessages((prev) => [...prev, `📊 Vote counts: ${voteText}`]);
+      } else if (data.msg) {
+        setMessages((prev) => [...prev, data.msg]);
       }
     };
     ws.current.onclose = () => {
-      console.log('WebSocket disconnected');
+      console.log("WebSocket disconnected");
       ws.current = null;
     };
     return () => {
-      if (ws.current && (ws.current.readyState === WebSocket.OPEN)) {
+      if (ws.current && ws.current.readyState === WebSocket.OPEN) {
         ws.current.close();
         ws.current = null;
-      } 
+      }
     };
   }, [loggedIn]);
-
 
   const sendMessage = () => {
     if (!chatInput.trim()) return;
     ws.current.send(JSON.stringify({ username: email, msg: chatInput }));
-    setChatInput('');
+    setChatInput("");
   };
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!email || !password) return alert('Please enter both email and password!');
+    if (!email || !password) return alert("Please enter both email and password!");
     try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch(`${API_BASE}/api/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: email, password }),
       });
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem('email', email);
+        localStorage.setItem("email", email);
         setLoggedIn(true);
         alert(`Welcome, ${email}!`);
       } else {
         alert(`Login failed: ${data.msg}`);
       }
     } catch (err) {
-      console.error('Login error:', err);
-      alert('Login failed — check console for details.');
+      console.error("Login error:", err);
+      alert("Login failed — check console for details.");
     }
   }
 
   async function handleLogout() {
     try {
-      await fetch('/api/logout', { method: 'POST' });
+      await fetch(`${API_BASE}/api/logout`, { method: "POST" });
     } catch (err) {
-      console.error('Logout error:', err);
+      console.error("Logout error:", err);
     }
-    localStorage.removeItem('email');
-    setEmail('');
-    setPassword('');
+    localStorage.removeItem("email");
+    setEmail("");
+    setPassword("");
     setLoggedIn(false);
     setMessages([]);
   }
 
   async function handleRegister() {
-    if (!email || !password) return alert('Please enter both email and password!');
+    if (!email || !password) return alert("Please enter both email and password!");
     try {
-      const response = await fetch('/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch(`${API_BASE}/api/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: email, password }),
       });
       const data = await response.json();
       if (response.ok) {
-        alert('Registration successful! You can now log in.');
+        alert("Registration successful! You can now log in.");
       } else {
         alert(`Registration failed: ${data.msg}`);
       }
     } catch (err) {
-      console.error('Register error:', err);
-      alert('Registration failed — check console for details.');
+      console.error("Register error:", err);
+      alert("Registration failed — check console for details.");
     }
   }
 
@@ -137,7 +140,7 @@ export default function Home({ loggedIn, setLoggedIn }) {
           </div>
         </>
       ) : (
-        <form onSubmit={handleSubmit} className="mx-auto" style={{ maxWidth: '400px' }}>
+        <form onSubmit={handleSubmit} className="mx-auto" style={{ maxWidth: "400px" }}>
           <div className="mb-3 input-group">
             <span className="input-group-text">@</span>
             <input

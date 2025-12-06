@@ -1,26 +1,35 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from "react";
 
 export default function Scores() {
-  const [votes, setVotes] = useState({});
+  const [votes, setVotes] = useState({ apple: 0, pumpkin: 0, cherry: 0, peach: 0 });
   const ws = useRef(null);
 
   useEffect(() => {
-    const fetchVotes = async () => {
+    async function fetchVotes() {
       try {
         const res = await fetch("/api/votes");
+        if (!res.ok) throw new Error("Failed to fetch votes");
         const data = await res.json();
         setVotes(data);
       } catch (err) {
-        console.error("Failed to fetch votes:", err);
+        console.error("Error fetching votes:", err);
+      }
+    }
+    fetchVotes();
+    ws.current = new WebSocket(`${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}/ws`);
+    ws.current.onopen = () => console.log("WebSocket connected");
+    ws.current.onclose = () => console.log("WebSocket disconnected");
+    ws.current.onmessage = (event) => {
+      try {
+        const message = JSON.parse(event.data);
+        if (message.type === "votes") setVotes(message.data);
+      } catch (err) {
+        console.error("Error parsing WebSocket message:", err);
       }
     };
-    fetchVotes();
-    ws.current = new WebSocket(`ws://${window.location.host}/ws`);
-    ws.current.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      if (message.type === "votes") setVotes(message.data);
+    return () => {
+      if (ws.current) ws.current.close();
     };
-    return () => ws.current.close();
   }, []);
 
   return (
@@ -43,7 +52,8 @@ export default function Scores() {
         </tbody>
       </table>
       <footer className="text-center mt-5 py-3 border-top">
-        <span>Created by Jeremiah Barton</span><br />
+        <span>Created by Jeremiah Barton</span>
+        <br />
         <a href="https://github.com/jeremiahu2/startup">GitHub</a>
       </footer>
     </main>
