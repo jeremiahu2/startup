@@ -134,8 +134,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Backend listens for WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Frontend makes WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Data sent over WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **WebSocket data displayed** - I did not complete this part of the deliverable.
-- [ ] **Application is fully functional** - I did not complete this part of the deliverable.
+- [x] **Backend listens for WebSocket connection** - I set up a WebSocket server in my backend (`index.js`) that accepts connections from clients.
+- [x] **Frontend makes WebSocket connection** - I configured the frontend to connect to the WebSocket server when the app loads.
+- [x] **Data sent over WebSocket connection** - I built a chat in the home page after login that uses WebSocket to send chat messages. The voting data however does not currently update correctly.
+- [x] **WebSocket data displayed** - The live chat in the home page uses WebSocket data to display live chat messages. The live votes however do not display in the `scores.jsx` component.
+- [ ] **Application is fully functional** - I updated my app so you can only view the play and scores page after login, but voting and live score updates do not work normally, so the application is not fully functional.
