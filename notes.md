@@ -110,3 +110,116 @@ Handling the toggling of the checkboxes was particularly interesting.
   ))}
 </div>
 ```
+
+### Final Notes
+1) What is the default port for HTTP/HTTPS/SSH?
+   - HTTP -> 80
+   - HTTPS -> 443
+   - SSH -> 22 
+2) What does an HTTP status code in the range of 300/400/500 indicate?
+   - 300 level -> Redirection
+   - 400 level -> Client Error
+   - 500 level -> Server Error
+3) What does the HTTP header content-type allow you to do?
+   - Tells the client or server how to interpret the request/response body
+   Such as:
+     - application/json
+     - text/html
+     - application/x-www-form-urlencoded
+   - Enables automatic parsing (e.g., JSON → JavaScript object)
+4) What does a “Secure cookie”/”Http-only cookie”/”Same-site cookie” do? https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
+   - Secure
+     - Cookie is only sent over HTTPS
+     - Prevents interception via HTTP
+   - HttpOnly
+     - Cookie cannot be accessed by JavaScript
+     - Prevents XSS attacks
+   - SameSite
+     - Controls cross-site cookie behavior
+     - Values:
+       - Strict: only same-site requests
+       - Lax: safe cross-site navigation
+       - None: allows cross-site (must be Secure)
+5) Assuming the following Express middleware, what would be the console.log output for an HTTP GET request with a URL path of /api/document?
+   
+6) Given the following Express service code: What does the following front end JavaScript that performs a fetch return?
+   - fetch() returns a Promise
+   - Resolves to a Response object
+   - .json() returns another Promise resolving to parsed JSON
+7) Given the following MongoDB query, select all of the matching documents {name:Mark}
+   - Matches documents where:
+     - The name field exists
+     - The value is exactly "Mark"
+     - Case-sensitive
+     - Does not match "mark" or "Markus"
+8) How should user passwords be stored?
+   - Hashed and salted
+   - Use:
+     - bcrypt
+     - argon2
+   - ❌ Never store:
+     - Plaintext passwords
+     - Encrypted passwords (reversible)
+9) Assuming the following node.js websocket code in the back end, and the following front end websocket code, what will the - front end log to the console?
+   - 
+10) What is the websocket protocol intended to provide?
+   - 
+11) What do the following acronyms stand for? JSX, JS, AWS, NPM, NVM
+    - JSX -> JavaScript XML
+    - JS -> JavaScript
+    - AWS -> Amazon Web Services
+    - NPM -> Node Package Manager
+    - NVM -> Node Version Manager 
+12) Assuming an HTML document with a body element. What text content will the following React component generate?  The react component will use parameters.
+   - 
+13) Given a set of React components that include each other, what will be generated
+   - 
+14) What does a React component with React.useState do?
+   - Adds state to a functional component
+   - Triggers re-render when state changes
+15) What are React Hooks used for?
+   - Add React features to function components:
+     - State
+     - Lifecycle logic
+     - Context
+     - Refs
+     - Performance optimization
+16) What does the State Hook/Context Hook/Ref Hook/Effect Hook/Performance Hook do? https://react.dev/reference/react/hooks
+   - State Hook (useState)
+     - Stores local component state
+   - Context Hook (useContext)
+     - Access shared/global state
+   - Ref Hook (useRef)
+     - Access DOM or persist values without re-render
+   - Effect Hook (useEffect)
+     - Side effects (fetching, subscriptions)
+   - Performance Hooks
+     - `useMemo`, `useCallback`
+     - Prevent unnecessary recalculations
+17) Given React Router code, select statements that are true.
+   - 
+18) What does the package.json file do?
+   - Defines:
+     - Dependencies
+     - Scripts
+     - Project metadata
+   - Enables reproducible builds
+19) What does the fetch function do?
+   - Makes HTTP requests from browser or Node
+   - Returns a Promise resolving to a Response
+20) What does node.js do?
+   - Runs JavaScript outside the browser
+   - Used for:
+     - Servers
+     - CLI tools
+     - Build systems
+21) What does pm2 do?
+   - Process manager for Node.js
+   - Keeps apps alive
+   - Restarts on crash
+   - Supports clustering
+22) What does Vite do?
+   - Frontend build tool
+   - Fast dev server
+   - Optimized production builds
+   - Used with React, Vue, etc.
